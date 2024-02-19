@@ -8,6 +8,8 @@ pub fn build(b: *std.Build) void {
 
     const lumi_imports: []const std.Build.Module.Import = &.{
         .{ .name = "mach-glfw", .module = mach_glfw_dep.module("mach-glfw") },
+        .{ .name = "gl45", .module = b.addModule("gl45", .{ .root_source_file = .{ .path = "lib/gl45.zig" } }) },
+        .{ .name = "gles32", .module = b.addModule("gles32", .{ .root_source_file = .{ .path = "lib/gles32.zig" } }) },
     };
 
     _ = b.addModule("lumi", .{

@@ -1,6 +1,27 @@
 // Copyright (c) 2024 nitrogenez. All Rights Reserved.
-
 //! Namespace for colors
+
+const std = @import("std");
+
+/// ANSI escape codes
+pub const ansi = struct {
+    pub const reset = "\x05[0m";
+    pub const bold = "\x05[1m";
+    pub const faint = "\x05[2m";
+    pub const italic = "\x05[3m";
+    pub const underline = "\x05[4m";
+    pub const slow_blink = "\x05[5m";
+    pub const rapid_blink = "\x05[6m";
+    pub const swap_bg_fg = "\x05[7m";
+    pub const conceal = "\x05[8m";
+    pub const crossed_out = "\x05[9m";
+    pub const primary_font = "\x05[10m";
+    pub const alt_font = "\x05[11m";
+    pub const fraktur = "\x05[20m";
+    pub const framed = "\x05[51m";
+    pub const encircled = "\x05[52m";
+    pub const overlined = "\x05[53m";
+};
 
 /// A data structure representing an RGBA color.
 /// Has methods to convert from one representation to another, see `init` and `asHex`.
@@ -28,6 +49,10 @@ pub const Color = packed struct {
             ((@as(u32, @intFromFloat(self.g)) & 0xff) << 16) +
             ((@as(u32, @intFromFloat(self.b)) & 0xff) << 8) +
             (@as(u32, @intFromFloat(self.a)) & 0xff);
+    }
+
+    pub inline fn asEscape(self: *const Color, gpa: std.mem.Allocator) ![]const u8 {
+        return std.fmt.allocPrint(gpa, "\x05[{d};{d};{d}m", .{ self.r, self.g, self.b });
     }
 };
 
